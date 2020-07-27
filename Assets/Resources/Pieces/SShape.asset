@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6139f689439a41af9fbbe64de21f307b, type: 3}
-  m_Name: LShape
+  m_Name: SShape
   m_EditorClassIdentifier: 
   tilesPositions:
   - {x: -1, y: 0}
   - {x: 0, y: 0}
-  - {x: 1, y: 0}
+  - {x: 0, y: 1}
   - {x: 1, y: 1}
+  color: {r: 0.48235294, g: 0.7529412, b: 0.2627451, a: 1}

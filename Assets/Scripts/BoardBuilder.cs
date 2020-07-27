@@ -30,3 +30,4 @@ public class BoardBuilder : MonoBehaviour
         board.Init(nodes, offset);
     }
 }
+

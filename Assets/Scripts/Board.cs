@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Board")]
@@ -12,6 +13,8 @@ public class Board : ScriptableObject
     private Vector2 _offset;
     [NonSerialized] 
     private BoardNode[,] _nodes;
+    [NonSerialized] 
+    private List<Piece> _pieces = new List<Piece>();
 
     public void Init(BoardNode[,] n, Vector2 off)
     {
@@ -21,7 +24,7 @@ public class Board : ScriptableObject
     
     public bool IsTileAvailable(Vector2Int node)
     {
-        return IsTileExist(node) && IsTileFree(node);
+        return IsTileExist(node) && !IsTileOccupated(node);
     }
     
     private bool IsTileExist(Vector2Int node)
@@ -29,9 +32,9 @@ public class Board : ScriptableObject
         return node.x >= 0 && node.x < gridSize.x && node.y>= 0 && node.y < gridSize.y;
     }
     
-    private bool IsTileFree(Vector2Int node)
+    private bool IsTileOccupated(Vector2Int node)
     {
-        return _nodes[node.x, node.y].GetTile() == null;
+        return _nodes[node.x, node.y].IsNodeOccupated();
     }
     
     private Vector2Int GetGridPosition(Vector3 pos)
@@ -44,13 +47,13 @@ public class Board : ScriptableObject
         return new Vector3(pos.x * nodeSize - _offset.x, -pos.y * nodeSize + _offset.y, 0);
     }
     
-    public void SetTileToNode(GameObject go, Vector2Int pos)
+    public void SetTileToNode(Tile go, Vector2Int pos, Status status)
     {
         if (IsTileExist(pos))
         {
-            if (_nodes[pos.x, pos.y].GetTile() == null)
+            if (!_nodes[pos.x, pos.y].IsNodeOccupated())
             {
-                _nodes[pos.x,pos.y].SetTile(go);
+                _nodes[pos.x,pos.y].SetTile(go, status);
             }
             else
             {
@@ -67,11 +70,53 @@ public class Board : ScriptableObject
     {
         if (IsTileExist(pos))
         {
-            _nodes[pos.x,pos.y].SetTile(null);
+            _nodes[pos.x,pos.y].SetTile(null, Status.AVAILABLE);
         }
         else
         {
             Debug.LogWarning("Position " + pos + " is out of range!");
+        }
+    }
+
+    public void AddPiece(Piece p)
+    {
+        _pieces.Add(p);
+    }
+    
+    public void CheckForLines()
+    {
+        for (int y = gridSize.y - 1; y > -1; y--)
+        {
+            bool clearLine = true;
+            for (int x = gridSize.x - 1; x > -1; x--)
+            {
+                if (!_nodes[x, y].IsNodeOccupated())
+                {
+                    clearLine = false;
+                    break;
+                }
+            }
+            
+            if(clearLine)
+                ClearLine(y);
+        }
+    }
+
+    private void ClearLine(int y)
+    {
+        for (int x = gridSize.x - 1; x > -1; x--)
+        {
+            _nodes[x, y].DestroyTile();
+        }
+
+        
+        //TODO::???
+        foreach (Piece piece in _pieces)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                piece.MoveDown();
+            }
         }
     }
 }
