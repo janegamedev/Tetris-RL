@@ -38,4 +38,9 @@ public class Tile
       {
             return _piece;
       }
+
+      public void MoveDown()
+      {
+            Debug.LogWarning("Move down tile");
+      }
 }

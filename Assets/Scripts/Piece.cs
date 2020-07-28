@@ -11,19 +11,23 @@ public class Piece : ScriptableObject
     public Vector2Int[] tilesPositions;
     public Color color;
     
-    [NonSerialized]
+    
     private List<Tile> _tiles = new List<Tile>();
-    [NonSerialized]
     private Transform _parent;
-    [NonSerialized]
     private Vector2Int _gridPos;
-    [NonSerialized]
     private Board _board;
     
     public void InitializePiece(Board b, Transform parent, GameObject[] t, Vector2Int pos, int rot)
     {
+        Debug.Log(b);
+        Debug.Log(parent);
+        
         _board = b;
         _parent = parent;
+        
+        Debug.Log(_board);
+        Debug.Log(_parent);
+        
         _parent.position = b.GetWorldPos(_gridPos);
         
         for (int i = 0; i < t.Length; i++)
@@ -74,6 +78,8 @@ public class Piece : ScriptableObject
             // Update grid position for this piece
             _gridPos += Vector2Int.up;
             // Update world position
+            Debug.Log(_parent);
+            Debug.Log(_board);
             _parent.position = _board.GetWorldPos(_gridPos);
             // Update new tile positions according to the piece position
             UpdatePositionsForTiles(false);
@@ -172,6 +178,16 @@ public class Piece : ScriptableObject
         }
 
         return pos;
+    }
+
+    public void DestroyPiece()
+    {
+        foreach (Tile tile in _tiles)
+        {
+            tile.go.transform.SetParent(_parent.parent);
+        }
+        
+        Destroy(_parent.gameObject);
     }
 }
 

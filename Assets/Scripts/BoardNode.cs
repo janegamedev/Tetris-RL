@@ -5,14 +5,13 @@ using UnityEngine;
 public class BoardNode
 {
     private Status _nodeStatus;
-    
     private Tile _occupatedTile;
-    private SpriteRenderer _renderer;
-    private Vector3 _worldPosition;
+    /*private SpriteRenderer _renderer;
+    private Vector3 _worldPosition;*/
     public BoardNode(GameObject go)
     {
-        _renderer = go.GetComponent<SpriteRenderer>();
-        _worldPosition = go.transform.position;
+        /*_renderer = go.GetComponent<SpriteRenderer>();
+        _worldPosition = go.transform.position;*/
         _nodeStatus = Status.AVAILABLE;
     }
 

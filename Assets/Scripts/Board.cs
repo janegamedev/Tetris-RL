@@ -83,8 +83,10 @@ public class Board : ScriptableObject
         _pieces.Add(p);
     }
     
-    public void CheckForLines()
+    public Queue<int> CheckForLines()
     {
+        Queue<int> lines = new Queue<int>();
+        
         for (int y = gridSize.y - 1; y > -1; y--)
         {
             bool clearLine = true;
@@ -98,24 +100,44 @@ public class Board : ScriptableObject
             }
             
             if(clearLine)
-                ClearLine(y);
+                lines.Enqueue(y);
         }
+
+        return lines;
     }
 
-    private void ClearLine(int y)
+    public void ClearNode(Vector2Int pos)
     {
-        for (int x = gridSize.x - 1; x > -1; x--)
-        {
-            _nodes[x, y].DestroyTile();
-        }
+        _nodes[pos.x, pos.y].DestroyTile();
+    }
 
-        
-        //TODO::???
-        foreach (Piece piece in _pieces)
+    public void MoveTilesDown()
+    {
+        for (int y = gridSize.y - 1; y > -1; y--)
         {
-            for (int i = 0; i < 2; i++)
+            for (int x = gridSize.x - 1; x > -1; x--)
             {
-                piece.MoveDown();
+                if (_nodes[x, y].IsNodeOccupated())
+                {
+                    Tile t = _nodes[x, y].GetTile();
+                    
+                    int lines = 0;
+                    for (int i = 1; i < gridSize.y; i++)
+                    {
+                        if (IsTileAvailable(new Vector2Int(x, y + i)))
+                        {
+                            lines = i;
+                        }
+                        else
+                            break;
+                    }
+
+                    Vector2Int localPos = t.GetLocalPosition() + Vector2Int.up * lines;
+                    Vector3 worldPos = GetWorldPos(localPos);
+                    
+                    t.UpdateLocalPosition(localPos);
+                    t.UpdateWorldPosition(worldPos);
+                }
             }
         }
     }

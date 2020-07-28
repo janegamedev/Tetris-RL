@@ -1,25 +1,21 @@
 using System;
 using UnityEngine;
 
-public class InputHandler: MonoBehaviour, IInputGiver
+public class PlayerInputHandler: MonoBehaviour, IInputGiver
 {
-    public PieceController controller;
-    
     public event Action<int> HorizontalInputReceived = delegate {  };
     public event Action<int> RotationInputReceived = delegate {  };
     public event Action<int> ActionInputReceived = delegate {  };
+    
+    public void Request()
+    {
+       GetInput();
+    }
 
     private float _keyNothing = 0, _keyLeft = -1, _keyRight = 1, _keyHold = 1, _keyHardDrop = 2;
     private float[] _actions = new float[3];
 
-    private void Start()
-    {
-        HorizontalInputReceived += controller.MovePieceHorizontal;
-        RotationInputReceived += controller.RotatePiece;
-        ActionInputReceived += controller.Action;
-    }
-
-    private void Update()
+    private void GetInput()
     {
         _actions[0] = _keyNothing;
         if (Input.GetKeyDown(KeyCode.LeftArrow))
