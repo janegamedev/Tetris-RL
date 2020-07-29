@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class FloatVariable : ScriptableObject
+namespace Tetris_RL.Variables
 {
-    public float value;
+    public class FloatVariable : ScriptableObject
+    {
+        public float value;
+    }
 }

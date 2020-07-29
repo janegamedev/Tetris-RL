@@ -1,4 +1,7 @@
-public abstract class StateActions
+namespace Tetris_RL.FSM
 {
-    public abstract void Execute();
+    public abstract class StateActions
+    {
+        public abstract void Execute();
+    }
 }

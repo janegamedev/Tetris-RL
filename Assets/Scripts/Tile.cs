@@ -1,46 +1,32 @@
 using UnityEngine;
 
-public class Tile
+namespace Tetris_RL
 {
-      public GameObject go;
-      private Piece _piece;
-      private Vector2Int _localPosition;
+      public class Tile
+      {
+            public readonly GameObject go;
+            private Vector2Int _localPosition;
       
-      public Tile(Piece p, GameObject tile, Vector2Int pos)
-      {
-            _piece = p;
-            go = tile;
-            _localPosition = pos;
-            go.GetComponent<SpriteRenderer>().color = p.color;
-      }
+            public Tile(Piece p, GameObject tile, Vector2Int pos)
+            {
+                  go = tile;
+                  _localPosition = pos;
+                  go.GetComponent<SpriteRenderer>().color = p.color;
+            }
 
-      public Vector2Int GetLocalPosition()
-      {
-            return _localPosition;
-      }
+            public Vector2Int GetLocalPosition()
+            {
+                  return _localPosition;
+            }
 
-      public void UpdateWorldPosition(Vector3 pos)
-      {
-            go.transform.position = pos;
-      }
+            public void UpdateWorldPosition(Vector3 pos)
+            {
+                  go.transform.position = pos;
+            }
 
-      public void UpdateLocalPosition(Vector2Int pos)
-      {
-            _localPosition = pos;
-      }
-
-      public void DestroyTile()
-      { 
-            _piece.RemoveTile(this);
-      }
-
-      public Piece GetParent()
-      {
-            return _piece;
-      }
-
-      public void MoveDown()
-      {
-            Debug.LogWarning("Move down tile");
+            public void UpdateLocalPosition(Vector2Int pos)
+            {
+                  _localPosition = pos;
+            }
       }
 }

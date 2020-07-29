@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class PieceVariable : ScriptableObject
+namespace Tetris_RL.Variables
 {
-    public Piece value;
+    public class PieceVariable : ScriptableObject
+    {
+        public Piece value;
+    }
 }

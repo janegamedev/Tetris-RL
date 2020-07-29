@@ -1,17 +1,20 @@
 using System.Collections.Generic;
 
-public class State
+namespace Tetris_RL.FSM
 {
-    public List<StateActions> actions = new List<StateActions>();
-
-    public void Tick(StateManager state)
+    public class State
     {
-        if(state.forceExit)
-            return;
+        public List<StateActions> actions = new List<StateActions>();
 
-        for (int i = 0; i < actions.Count; i++)
+        public void Tick(StateManager state)
         {
-            actions[i].Execute();
+            if(state.forceExit)
+                return;
+
+            for (int i = 0; i < actions.Count; i++)
+            {
+                actions[i].Execute();
+            }
         }
     }
 }

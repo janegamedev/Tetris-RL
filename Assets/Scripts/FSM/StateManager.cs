@@ -3,64 +3,67 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class StateManager : SerializedMonoBehaviour
+namespace Tetris_RL.FSM
 {
-    private protected State startingState, currentState;
-    public bool forceExit;
+    public abstract class StateManager : SerializedMonoBehaviour
+    {
+        private protected State startingState, currentState;
+        public bool forceExit;
     
-    protected readonly Dictionary<string, State> allStates = new Dictionary<string, State>();
+        protected readonly Dictionary<string, State> allStates = new Dictionary<string, State>();
 
-    private void Start()
-    {
-        Init();
-    }
-
-    public abstract void Init();
-
-    public void Update()
-    {
-        if (currentState != null)
+        private void Start()
         {
-            currentState.Tick(this);
+            Init();
         }
 
-        forceExit = false;
-    }
+        public abstract void Init();
 
-    public void SetNextState()
-    {
-        int ind = 0;
-        for (int i = 0; i < allStates.Count; i++)
+        public void Update()
         {
-            if (allStates.ElementAt(i).Value == currentState)
-                ind = i;
+            if (currentState != null)
+            {
+                currentState.Tick(this);
+            }
+
+            forceExit = false;
         }
 
-        if (ind + 1 >= allStates.Count)
-            ind = 0;
-        SetState(allStates.ElementAt(ind + 1).Key);
-    }
-
-    public void SetState(string id)
-    {
-        State targetState = GetState(id);
-
-        if (targetState == null)
+        public void SetNextState()
         {
-            Debug.LogError("State with id: " + id + " cannot be found!");
+            int ind = 0;
+            for (int i = 0; i < allStates.Count; i++)
+            {
+                if (allStates.ElementAt(i).Value == currentState)
+                    ind = i;
+            }
+
+            if (ind + 1 >= allStates.Count)
+                ind = 0;
+            SetState(allStates.ElementAt(ind + 1).Key);
         }
 
-        currentState = targetState;
-    }
+        public void SetState(string id)
+        {
+            State targetState = GetState(id);
 
-    public void SetStartingState()
-    {
-        currentState = startingState;
-    }
+            if (targetState == null)
+            {
+                Debug.LogError("State with id: " + id + " cannot be found!");
+            }
 
-    private State GetState(string id)
-    {
-        allStates.TryGetValue(id, out State result);
-        return result;
+            currentState = targetState;
+        }
+
+        public void SetStartingState()
+        {
+            currentState = startingState;
+        }
+
+        private State GetState(string id)
+        {
+            allStates.TryGetValue(id, out State result);
+            return result;
+        }
     }
 }

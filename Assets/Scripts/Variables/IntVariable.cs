@@ -1,6 +1,21 @@
+using System;
 using UnityEngine;
 
-public class IntVariable : ScriptableObject
+namespace Tetris_RL.Variables
 {
-    public int value;
+    public class IntVariable : ScriptableObject
+    {
+        public event Action<int> OnValueChanged = delegate {  }; 
+        private int _value;
+        
+        public int Value
+        {
+            get => _value;
+            set
+            {
+                _value = value; 
+                OnValueChanged.Invoke(_value);
+            }
+        }
+    }
 }
