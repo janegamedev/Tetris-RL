@@ -107,22 +107,10 @@ namespace Tetris_RL
             RemoveTileFromNode(pos);
         }
 
-        /*public void DebugBoardStatus()
-    {
-        string ret = "";
-        
-        for (int i = 0; i < gridSize.y; i++)
+        public BoardNode[,] GetNodes()
         {
-            for (int j = 0; j < gridSize.x; j++)
-            {
-                ret += _nodes[j, i].GetTile() == null ? "O " : "X ";
-            }
-
-            ret += "\n";
+            return _nodes;
         }
-
-        Debug.Log(ret);
-    }*/
 
         public void MoveDownAbove(int line)
         {

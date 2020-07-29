@@ -57,12 +57,12 @@ namespace Tetris_RL.Managers
             start.actions.Add(new PieceSpawn(this, _currentBoard, spawner, _currentPiece, _nextPiece, pieces));
 
             State pieceControl = new State();
-            pieceControl.actions.Add(new InputRequester(_currentGiver, _horizontalVariable, _rotationVariable, _actionVariable));
-            pieceControl.actions.Add(new ActionController(_currentPiece, _horizontalVariable, _rotationVariable, _actionVariable, _hardDrop));
+            /*pieceControl.actions.Add(new InputRequester(_currentGiver, _horizontalVariable, _rotationVariable, _actionVariable));*/
+            pieceControl.actions.Add(new ActionController(_currentPiece, _currentGiver, _hardDrop));
             pieceControl.actions.Add(new MoverDown(this, speedConfig, _currentPiece, _currentMoveDelay, _hardDrop));
 
             State lineCheck = new State();
-            lineCheck.actions.Add(new LineChecker(this, _currentBoard, _scoreVariable));
+            lineCheck.actions.Add(new LineChecker(this, _currentBoard, _scoreVariable, _currentGiver));
             lineCheck.actions.Add(new ScoreDisplayer(_scoreVariable, scoreText));
         
             State end = new State();
@@ -88,6 +88,7 @@ namespace Tetris_RL.Managers
             _currentMoveDelay = ScriptableObject.CreateInstance<FloatVariable>();
             _hardDrop = ScriptableObject.CreateInstance<BoolVariable>();
             _currentGiver = plyingType == Type.PLAYER ? playerGiver : agentGiver;
+            _currentGiver.SetBoard(_currentBoard);
             player.SetActive(plyingType == Type.PLAYER);
             agent.SetActive(plyingType == Type.AI);
         }
@@ -96,7 +97,7 @@ namespace Tetris_RL.Managers
         {
             _currentBoard = Instantiate(boardConfigs);
             BoardNode[,] nodes = new BoardNode[_currentBoard.gridSize.x, _currentBoard.gridSize.y];
-            Vector2 offset = new Vector2(_currentBoard.gridSize.x / 2f - _currentBoard.nodeSize / 2f, _currentBoard.gridSize.y / 2f - _currentBoard.nodeSize / 2f);
+            Vector2 offset = new Vector2(_currentBoard.gridSize.x / 2f - _currentBoard.nodeSize / 2f - transform.position.x, _currentBoard.gridSize.y / 2f - _currentBoard.nodeSize / 2f + transform.position.y);
         
             for (int y = 0; y < _currentBoard.gridSize.y; y++)
             {

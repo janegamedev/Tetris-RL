@@ -20,7 +20,6 @@ namespace Tetris_RL.Actions
         
         public override void Execute()
         {
-            Debug.Log("End game state is called");
             OnEpisodeEnd?.Invoke();
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Tetris_RL.FSM;
+using Tetris_RL.RL;
 using Tetris_RL.Variables;
 using UnityEngine;
 
@@ -10,17 +11,19 @@ namespace Tetris_RL.Actions
         private readonly Board _board;
         private readonly StateManager _manager;
         private readonly IntVariable _score;
+        private readonly IInputGiver _giver;
         
         private Queue<int> _lines;
         private bool _checkNeeded;
         private float _destroyDelay = 0.25f, _timeCount;
         private int _currentLine, _currentIndex;
     
-        public LineChecker(StateManager m, Board b, IntVariable s)
+        public LineChecker(StateManager m, Board b, IntVariable s, IInputGiver giver)
         {
             _manager = m;
             _board = b;
             _score = s;
+            _giver = giver;
             _checkNeeded = true;
         }
     
@@ -72,6 +75,9 @@ namespace Tetris_RL.Actions
             {
                 // Calling move down tile after each line cleared
                 _board.MoveDownAbove(_currentLine);
+                
+                //Adding agent reward
+                _giver.AddBreakLineReward();
                 
                 // Increase score by constant amount
                 _score.Value += 100;

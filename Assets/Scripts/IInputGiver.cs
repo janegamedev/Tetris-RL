@@ -9,6 +9,7 @@ namespace Tetris_RL.RL
         event Action<int> ActionInputReceived;
 
         void Request();
-        int GetFrequency();
+        void SetBoard(Board b);
+        void AddBreakLineReward();
     }
 }

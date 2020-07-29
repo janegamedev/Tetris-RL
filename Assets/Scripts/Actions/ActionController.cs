@@ -1,48 +1,57 @@
 using Tetris_RL.FSM;
+using Tetris_RL.RL;
 using Tetris_RL.Variables;
 
 namespace Tetris_RL.Actions
 {
     public class ActionController : StateActions
     {
-        private readonly IntVariable _horizontalVariable, _rotationVariable, _actionVariable;
         private readonly PieceVariable _currentPiece;
         private readonly BoolVariable _hardDrop;
+        private readonly IInputGiver _giver;
     
-        public ActionController(PieceVariable p, IntVariable h, IntVariable r, IntVariable a, BoolVariable d)
+        public ActionController(PieceVariable p, IInputGiver g, BoolVariable d)
         {
             _currentPiece = p;
-            _horizontalVariable = h;
-            _rotationVariable = r;
-            _actionVariable = a;
+            _giver = g;
             _hardDrop = d;
+            SubscribeGiver();
         }
-  
+        
+        private void SubscribeGiver()
+        {
+            _giver.HorizontalInputReceived += MovePieceHorizontal;
+            _giver.RotationInputReceived += RotatePiece;
+            _giver.ActionInputReceived += ActivateDrop;
+        }
+        
         public override void Execute()
         {
-            if (_hardDrop.Value) return;
-            
-            if (_horizontalVariable.Value != 0)
-                MovePieceHorizontal(_horizontalVariable.Value);
-            if(_rotationVariable.Value != 0)
-                RotatePiece(_rotationVariable.Value);
-       
-            if (_actionVariable.Value == 1)
-            {
-                _hardDrop.Value = true;
-            }
+            _giver.Request();
+        }
+        
+        private void ActivateDrop(int value)
+        { 
+            if(_currentPiece.value == null || value == 0 || _hardDrop.Value)
+                return;
+
+            _hardDrop.Value = true;
         }
 
         private void RotatePiece(int dir)
         {
-            if(_currentPiece.value != null)
-                _currentPiece.value.RotateComplex(dir);
+            if(_currentPiece.value == null || dir == 0 || _hardDrop.Value)
+                return;
+            
+            _currentPiece.value.RotateComplex(dir);
         }
 
         private void MovePieceHorizontal(int dir)
         {
-            if(_currentPiece.value != null)
-                _currentPiece.value.MoveHorizontal(dir);
+            if(_currentPiece.value == null || dir == 0 || _hardDrop.Value)
+                return;
+
+            _currentPiece.value.MoveHorizontal(dir);
         }
     }
 

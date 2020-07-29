@@ -19,11 +19,10 @@ namespace Tetris_RL.Player
             GetInput();
         }
 
-        public int GetFrequency()
-        {
-            return 1;
-        }
-        
+        public void SetBoard(Board b){}
+
+        public void AddBreakLineReward(){}
+
         private void GetInput()
         {
             _actions[0] = keys.keyNothing;
