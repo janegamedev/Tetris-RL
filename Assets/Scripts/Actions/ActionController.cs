@@ -29,10 +29,6 @@ namespace Tetris_RL.Actions
        
             if (_actionVariable.Value == 1)
             {
-                //Hold
-            }
-            else if (_actionVariable.Value == 2)
-            {
                 _hardDrop.Value = true;
             }
         }

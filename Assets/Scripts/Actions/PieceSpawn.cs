@@ -15,7 +15,7 @@ namespace Tetris_RL.Actions
         private readonly StateManager _manager;
         private readonly TileSpawner _spawner;
         private readonly Board _board;
-        private Vector2Int spawnPosition = new Vector2Int(4, 0);
+        private readonly Vector2Int _spawnPosition = new Vector2Int(4, 0);
    
         public PieceSpawn(StateManager m, Board b, TileSpawner s, PieceVariable c, PieceVariable n, Piece[] ps)
         {
@@ -31,14 +31,14 @@ namespace Tetris_RL.Actions
         {
             if (_currentPiece.value == null && _nextPiece.value == null)
             {
-                _currentPiece.value = _spawner.SpawnTile(_pieces[Random.Range(0,_pieces.Length)], _board, spawnPosition);
+                _currentPiece.value = _spawner.SpawnTile(_pieces[Random.Range(0,_pieces.Length)], _board, _spawnPosition);
                 _nextPiece.value = _pieces[Random.Range(0,_pieces.Length)];
             }
             else
             {
                 if (IsPieceFittable(_nextPiece.value))
                 {
-                    _currentPiece.value = _spawner.SpawnTile(_nextPiece.value, _board, spawnPosition);
+                    _currentPiece.value = _spawner.SpawnTile(_nextPiece.value, _board, _spawnPosition);
                     _nextPiece.value = _pieces[Random.Range(0,_pieces.Length)];
                 }
                 else
@@ -53,7 +53,7 @@ namespace Tetris_RL.Actions
 
         private bool IsPieceFittable(Piece p)
         {
-            return p.tilesPositions.All(tilesPosition => _board.IsTileAvailable(spawnPosition + tilesPosition));
+            return p.tilesPositions.All(tilesPosition => _board.IsTileAvailable(_spawnPosition + tilesPosition));
         }
     }
 }

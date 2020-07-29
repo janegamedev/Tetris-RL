@@ -315,6 +315,8 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+  frequency: 5
+  keys: {fileID: 11400000, guid: e1430b63285f4fb489385dae7d77cb0f, type: 2}
 --- !u!1 &864984191
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,6 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e6b7de4bea4e2591afd052ddbe15a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keys: {fileID: 11400000, guid: e1430b63285f4fb489385dae7d77cb0f, type: 2}
 --- !u!4 &2004748621
 Transform:
   m_ObjectHideFlags: 0

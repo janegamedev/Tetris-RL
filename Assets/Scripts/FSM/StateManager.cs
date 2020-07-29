@@ -19,7 +19,7 @@ namespace Tetris_RL.FSM
 
         public abstract void Init();
 
-        public void Update()
+        public void FixedUpdate()
         {
             if (currentState != null)
             {
