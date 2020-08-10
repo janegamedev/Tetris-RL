@@ -43,7 +43,7 @@ namespace Tetris_RL.Actions
             if(_currentPiece.value == null || dir == 0 || _hardDrop.Value)
                 return;
             
-            _currentPiece.value.RotateComplex(dir);
+            _currentPiece.value.RotateComplex(dir == 1? 1 : -1);
         }
 
         private void MovePieceHorizontal(int dir)
@@ -51,7 +51,7 @@ namespace Tetris_RL.Actions
             if(_currentPiece.value == null || dir == 0 || _hardDrop.Value)
                 return;
 
-            _currentPiece.value.MoveHorizontal(dir);
+            _currentPiece.value.MoveHorizontal(dir == 1? 1 : -1);
         }
     }
 

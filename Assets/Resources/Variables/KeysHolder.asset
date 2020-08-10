@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: KeysHolder
   m_EditorClassIdentifier: 
   keyNothing: 0
-  keyLeft: -1
+  keyLeft: 2
   keyRight: 1
   keyHardDrop: 1

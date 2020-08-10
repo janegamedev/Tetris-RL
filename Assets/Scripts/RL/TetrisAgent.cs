@@ -71,15 +71,20 @@ namespace Tetris_RL.RL
 
         public void AddBreakLineReward()
         {
-            AddReward(1f);
+            AddReward(5f);
         }
 
         public override void OnActionReceived(float[] vectorAction)
         {
-            Debug.Log("HEURISTIC");
             HorizontalInputReceived.Invoke((int) vectorAction[0]);
             RotationInputReceived.Invoke((int) vectorAction[1]);
             ActionInputReceived.Invoke((int) vectorAction[2]);
+
+            for (int i = 0; i < vectorAction.Length; i++)
+            {
+                if (vectorAction[i] != keys.keyNothing) 
+                    AddReward(-0.0001f);
+            }
         }
 
         public void Reset()
