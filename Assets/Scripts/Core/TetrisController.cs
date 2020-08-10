@@ -1,13 +1,12 @@
-using System.Linq;
 using Sirenix.OdinInspector;
 using Tetris_RL.Actions;
 using Tetris_RL.FSM;
-using Tetris_RL.RL;
+using Tetris_RL.Interfaces;
 using Tetris_RL.Variables;
 using TMPro;
 using UnityEngine;
 
-namespace Tetris_RL.Managers
+namespace Tetris_RL.Core
 {
     public class TetrisController : StateManager, IResetter
     {
@@ -20,13 +19,9 @@ namespace Tetris_RL.Managers
         public Piece[] pieces;
         [BoxGroup("Pieces Configs")] 
         public TileSpawner spawner;
-    
-        [BoxGroup("Default Configs")] 
-        public Type plyingType;
-        [BoxGroup("Input References")]
-        public IInputGiver agentGiver, playerGiver;
-        [BoxGroup("Input Game Objects")] 
-        public GameObject agent, player;
+        
+        [BoxGroup("Agent")]
+        public IInputGiver currentGiver;
         [BoxGroup("Resetters")] 
         public IResetter[] resetters;
 
@@ -35,14 +30,11 @@ namespace Tetris_RL.Managers
 
         [BoxGroup("Canvas Settings")] 
         public TextMeshProUGUI scoreText;
-        /*[BoxGroup("Canvas Settings")] 
-        public GameObject nextPieceImage;*/
-        
+
         private PieceVariable _currentPiece, _nextPiece;
-        private IntVariable _horizontalVariable, _rotationVariable, _actionVariable, _scoreVariable;
+        private IntVariable _scoreVariable;
         private FloatVariable _currentMoveDelay;
         private BoolVariable _hardDrop;
-        private IInputGiver _currentGiver;
         private Board _currentBoard;
     
         private void Awake()
@@ -57,12 +49,11 @@ namespace Tetris_RL.Managers
             start.actions.Add(new PieceSpawn(this, _currentBoard, spawner, _currentPiece, _nextPiece, pieces));
 
             State pieceControl = new State();
-            /*pieceControl.actions.Add(new InputRequester(_currentGiver, _horizontalVariable, _rotationVariable, _actionVariable));*/
-            pieceControl.actions.Add(new ActionController(_currentPiece, _currentGiver, _hardDrop));
+            pieceControl.actions.Add(new ActionController(_currentPiece, currentGiver, _hardDrop));
             pieceControl.actions.Add(new MoverDown(this, speedConfig, _currentPiece, _currentMoveDelay, _hardDrop));
 
             State lineCheck = new State();
-            lineCheck.actions.Add(new LineChecker(this, _currentBoard, _scoreVariable, _currentGiver));
+            lineCheck.actions.Add(new LineChecker(this, _currentBoard, _scoreVariable, currentGiver));
             lineCheck.actions.Add(new ScoreDisplayer(_scoreVariable, scoreText));
         
             State end = new State();
@@ -79,18 +70,12 @@ namespace Tetris_RL.Managers
 
         private void InitVariables()
         {
-            _horizontalVariable = ScriptableObject.CreateInstance<IntVariable>();
-            _rotationVariable = ScriptableObject.CreateInstance<IntVariable>();
-            _actionVariable = ScriptableObject.CreateInstance<IntVariable>();
             _scoreVariable = ScriptableObject.CreateInstance<IntVariable>();
             _currentPiece = ScriptableObject.CreateInstance<PieceVariable>();
             _nextPiece = ScriptableObject.CreateInstance<PieceVariable>();
             _currentMoveDelay = ScriptableObject.CreateInstance<FloatVariable>();
             _hardDrop = ScriptableObject.CreateInstance<BoolVariable>();
-            _currentGiver = plyingType == Type.PLAYER ? playerGiver : agentGiver;
-            _currentGiver.SetBoard(_currentBoard);
-            player.SetActive(plyingType == Type.PLAYER);
-            agent.SetActive(plyingType == Type.AI);
+            currentGiver.SetBoard(_currentBoard);
         }
     
         private void BuildBoard()
@@ -124,11 +109,5 @@ namespace Tetris_RL.Managers
             _currentBoard.ResetBoard();
             SetStartingState();
         }
-    }
-
-    public enum Type
-    {
-        PLAYER, 
-        AI
     }
 }

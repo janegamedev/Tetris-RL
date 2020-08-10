@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Tetris_RL
+namespace Tetris_RL.Core
 {
       public class Tile
       {

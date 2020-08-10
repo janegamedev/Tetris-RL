@@ -1,5 +1,6 @@
 ﻿using System;
-using Tetris_RL.Actions;
+using Tetris_RL.Core;
+using Tetris_RL.Interfaces;
 using Tetris_RL.Variables;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;

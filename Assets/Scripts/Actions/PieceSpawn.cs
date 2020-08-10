@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Tetris_RL.Core;
 using Tetris_RL.FSM;
-using Tetris_RL.Managers;
 using Tetris_RL.Variables;
 using UnityEngine;
 

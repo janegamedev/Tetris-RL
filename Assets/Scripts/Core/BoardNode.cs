@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace Tetris_RL
+namespace Tetris_RL.Core
 {
     [System.Serializable]
     public class BoardNode

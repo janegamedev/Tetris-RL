@@ -4,7 +4,7 @@ using System.Linq;
 using System.Numerics;
 using UnityEngine;
 
-namespace Tetris_RL
+namespace Tetris_RL.Core
 {
     [CreateAssetMenu(menuName = "Piece/Piece Shape")]
     public class Piece : ScriptableObject

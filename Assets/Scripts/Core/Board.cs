@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Tetris_RL.Actions;
 using UnityEngine;
 
-namespace Tetris_RL
+namespace Tetris_RL.Core
 {
     [CreateAssetMenu(menuName = "Board")]
     public class Board : ScriptableObject

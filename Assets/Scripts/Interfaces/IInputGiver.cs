@@ -1,6 +1,7 @@
 using System;
+using Tetris_RL.Core;
 
-namespace Tetris_RL.RL
+namespace Tetris_RL.Interfaces
 {
     public interface IInputGiver
     {

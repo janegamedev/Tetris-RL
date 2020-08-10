@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Tetris_RL.Managers
+namespace Tetris_RL.Core
 {
     public class TileSpawner : MonoBehaviour
     {

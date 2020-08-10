@@ -1,4 +1,4 @@
-namespace Tetris_RL.Actions
+namespace Tetris_RL.Interfaces
 {
     public interface IResetter
     {
